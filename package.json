@@ -1,0 +1,19 @@
+{
+  "name": "@hexlet/code",
+  "version": "0.1.0",
+  "description": "Обучающий проект №2",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avshukan/frontend-project-lvl2.git"
+  },
+  "author": "avshukan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/avshukan/frontend-project-lvl2/issues"
+  },
+  "homepage": "https://github.com/avshukan/frontend-project-lvl2#readme"
+}
