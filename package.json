@@ -1,7 +1,11 @@
 {
   "name": "@hexlet/code",
   "version": "0.1.0",
+  "type": "module",
   "description": "Обучающий проект №2",
+  "bin": {
+    "gendiff": "bin/gendiff.js"
+  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,5 +19,14 @@
   "bugs": {
     "url": "https://github.com/avshukan/frontend-project-lvl2/issues"
   },
-  "homepage": "https://github.com/avshukan/frontend-project-lvl2#readme"
+  "homepage": "https://github.com/avshukan/frontend-project-lvl2#readme",
+  "dependencies": {
+    "commander": "^8.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.6.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-react": "^7.28.0"
+  }
 }
