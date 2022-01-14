@@ -21,7 +21,8 @@
   },
   "homepage": "https://github.com/avshukan/frontend-project-lvl2#readme",
   "dependencies": {
-    "commander": "^8.3.0"
+    "commander": "^8.3.0",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "eslint": "^8.6.0",
