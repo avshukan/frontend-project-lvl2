@@ -1,7 +1,7 @@
 name: self
 on: push
 jobs:
-  eslint:
+  self:
     runs-on: ubuntu-latest
     steps:
       - name: check

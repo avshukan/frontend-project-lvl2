@@ -8,7 +8,7 @@ export default (data1, data2) => {
     if (!_.has(json1, key)) { return [`+ ${key}: ${json2[key]}`]; }
     if (!_.has(json2, key)) { return [`- ${key}: ${json1[key]}`]; }
     return (json1[key] === json2[key])
-      ? [`  ${key}: ${json2[key]}`]
+      ? [`= ${key}: ${json2[key]}`]
       : [`- ${key}: ${json1[key]}`, `+ ${key}: ${json2[key]}`];
   });
   return ['{', ...diff.flat().map((s) => (`  ${s}`)), '}'].join('\n');
