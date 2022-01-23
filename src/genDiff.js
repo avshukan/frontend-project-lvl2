@@ -1,6 +1,15 @@
 import _ from 'lodash';
 
-export default (obj1, obj2) => {
+const makeNode = (key, obj1, obj2) => {
+  const node = {
+    state: 'unchanged',
+    oldValue: obj1[key],
+    newValue: obj2[key],
+  };
+  return node;
+};
+
+const makeDiff = (obj1, obj2) => {
   const keys = _.union(_.keys(obj1), _.keys(obj2)).sort();
   const diff = keys.map((key) => {
     if (!_.has(obj1, key)) { return [`+ ${key}: ${obj2[key]}`]; }
@@ -9,5 +18,13 @@ export default (obj1, obj2) => {
       ? [`  ${key}: ${obj2[key]}`]
       : [`- ${key}: ${obj1[key]}`, `+ ${key}: ${obj2[key]}`];
   });
-  return ['{', ...diff.flat().map((s) => (`  ${s}`)), '}'].join('\n');
+  return diff;
+};
+
+const printDiff = (diff) => ['{', ...diff.flat().map((s) => (`  ${s}`)), '}'].join('\n');
+
+export default (obj1, obj2) => {
+  const diff = makeDiff(obj1, obj2);
+  const print = printDiff(diff);
+  return print;
 };

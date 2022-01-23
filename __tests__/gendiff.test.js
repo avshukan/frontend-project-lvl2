@@ -54,3 +54,18 @@ describe('yaml tests', () => {
     },
   );
 });
+
+describe('deep json tests', () => {
+  test.each([
+    ['deepFile1.json', 'deepFile2.json', 'deepJsonDiff12.txt'],
+  ])(
+    'apply genDiff with %s & %s and expected %s',
+    (filenameBefore, filenameAfter, filenameExpected) => {
+      const fileBefore = parsers(getFixturesPath(filenameBefore));
+      const fileAfter = parsers(getFixturesPath(filenameAfter));
+      const expectedResult = readFile(filenameExpected);
+      const realResult = genDiff(fileBefore, fileAfter);
+      expect(realResult).toEqual(expectedResult);
+    },
+  );
+});
