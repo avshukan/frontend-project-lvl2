@@ -1,7 +1,30 @@
 import _ from 'lodash';
 
-const makeNode = (key, obj1, obj2) => {
+const makeNode = (key, oldObj, newObj) => {
   const node = {
+    key,
+    state,
+    value,
+    children
+   };
+  if (!_.has(oldObj, key)) {
+    node[state] = 'added';
+    if (newObj[key] === null) {
+      node[key] = value;
+    } else if (typeof newObj[key] !== 'object') {
+      node[key] = newObj[key];
+    } {
+      _.keys(newObj[key]);
+    };
+    return [`+ ${key}: ${obj2[key]}`];
+  }
+  if (!_.has(obj2, key)) { return [`- ${key}: ${obj1[key]}`]; }
+  return (obj1[key] === obj2[key])
+    ? [`  ${key}: ${obj2[key]}`]
+    : [`- ${key}: ${obj1[key]}`, `+ ${key}: ${obj2[key]}`];
+
+  node[key]
+
     state: 'unchanged',
     oldValue: obj1[key],
     newValue: obj2[key],
