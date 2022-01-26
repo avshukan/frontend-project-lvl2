@@ -1,3 +1,4 @@
+import plain from './plain.js';
 import stylish from './stylish.js';
 
-export default (formatName) => stylish;
+export default (formatName) => (formatName === 'plain' ? plain : stylish);
