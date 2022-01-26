@@ -24,13 +24,12 @@ program
   .arguments('<filepath1> <filepath2>')
   .action((filepath1, filepath2) => {
     try {
-      // const data1 = readFile(filepath1);
-      // const data2 = readFile(filepath2);
-      // const diff = genDiff(data1, data2);
       const obj1 = parsers(getPath(filepath1));
       const obj2 = parsers(getPath(filepath2));
       const diff = genDiff(obj1, obj2);
-      console.log(diff);
+      const formatter = program.opts().format ?? stylish;
+      const result = formatter(diff);
+      console.log(result);
     } catch (e) {
       console.error('something was wrong...');
       console.error(e);

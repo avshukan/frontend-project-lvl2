@@ -97,5 +97,7 @@ const genDiff = (obj1, obj2) => {
   return diff;
 };
 
-export { nodeStates, getName, getValue, getState, getIsObject, getChildren };
+export {
+  nodeStates, getName, getValue, getState, getIsObject, getChildren,
+};
 export default genDiff;

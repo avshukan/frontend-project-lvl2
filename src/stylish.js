@@ -1,4 +1,6 @@
-import { getName, getValue, getState, getIsObject, getChildren } from "./genDiff";
+import {
+  getName, getValue, getState, getIsObject, getChildren,
+} from './genDiff.js';
 
 const indent = ' ';
 
