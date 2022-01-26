@@ -2,7 +2,7 @@ import fs from 'fs';
 import path, { dirname } from 'path';
 import { test, expect, describe } from '@jest/globals';
 import { fileURLToPath } from 'url';
-import genDiff, { parsers } from '../index.js';
+import genDiff, { parsers, stylish } from '../index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -11,8 +11,9 @@ const readFile = (filename) => fs.readFileSync(getFixturesPath(filename), 'utf-8
 const handler = (filenameBefore, filenameAfter, filenameExpected) => {
   const fileBefore = parsers(getFixturesPath(filenameBefore));
   const fileAfter = parsers(getFixturesPath(filenameAfter));
+  const diff = genDiff(fileBefore, fileAfter);
+  const realResult = stylish(diff);
   const expectedResult = readFile(filenameExpected);
-  const realResult = genDiff(fileBefore, fileAfter);
   expect(realResult).toEqual(expectedResult);
 };
 

@@ -2,7 +2,7 @@
 import { Command } from 'commander';
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
-import genDiff, { parsers } from '../index.js';
+import genDiff, { parsers, stylish } from '../index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

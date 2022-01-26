@@ -1,7 +1,5 @@
 import _ from 'lodash';
 
-const indent = ' ';
-
 const nodeStates = {
   added: '+',
   removed: '-',
@@ -58,29 +56,6 @@ const deepCopy = (node, state) => {
   return copy;
 };
 
-const printArrayNode = (node, deep = 0) => {
-  const print = [];
-  const name = getName(node);
-  const state = getState(node);
-  const value = getValue(node);
-  const children = getChildren(node);
-  const isObject = getIsObject(node);
-  if (isObject) {
-    const firstString = (deep > 0) ? `${indent.repeat(4 * deep - 2)}${state} ${name}: {` : '{';
-    print.push(firstString);
-    children.forEach((child) => {
-      print.push(...printArrayNode(child, deep + 1));
-    });
-    const lastString = (deep > 0) ? `${indent.repeat(4 * deep)}}` : '}';
-    print.push(lastString);
-  } else {
-    print.push(`${indent.repeat(4 * deep - 2)}${state} ${name}: ${value}`);
-  }
-  return print;
-};
-
-const printNode = (node) => printArrayNode(node).join('\n');
-
 const makeDiffChildren = (children1, children2) => {
   const children = [];
   const keys = _.union(children1.map((el) => getName(el)), children2.map((el) => getName(el)));
@@ -114,12 +89,13 @@ const makeDiffChildren = (children1, children2) => {
 const genDiff = (obj1, obj2) => {
   const node1 = makeNode(obj1);
   const node2 = makeNode(obj2);
-  const node = makeNode({});
+  const diff = makeNode({});
   const children1 = getChildren(node1);
   const children2 = getChildren(node2);
   const children = makeDiffChildren(children1, children2);
-  children.forEach((child) => addChildren(node, child));
-  return printNode(node);
+  children.forEach((child) => addChildren(diff, child));
+  return diff;
 };
 
+export { nodeStates, getName, getValue, getState, getIsObject, getChildren };
 export default genDiff;
