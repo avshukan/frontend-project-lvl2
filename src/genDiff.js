@@ -1,28 +1,20 @@
 import _ from 'lodash';
 
-const getName = (node) => node.name;
+const indent = ' ';
 
-const setName = (node, name) => {
-  node.name = name;
+const nodeStates = {
+  added: '+',
+  removed: '-',
+  unchanged: ' ',
 };
+
+const getName = (node) => node.name;
 
 const getState = (node) => node.state;
 
-const setState = (node, state) => {
-  node.state = state;
-};
-
 const getValue = (node) => node.value;
 
-const setValue = (node, value) => {
-  node.value = value;
-};
-
 const getIsObject = (node) => node.isObject;
-
-const setIsObject = (node, isObject) => {
-  node.isObject = isObject;
-};
 
 const getChildren = (node) => node.children;
 
@@ -30,33 +22,35 @@ const addChildren = (node, child) => {
   node.children.push(child);
 };
 
-const makeNode = (obj, name, state = ' ') => {
-  const node = {
-    children: [],
-  };
-  setName(node, name);
-  setState(node, state);
-  if (typeof obj === 'object' && obj !== null) {
-    setIsObject(node, true);
-    _.keys(obj).forEach((key) => {
-      const child = makeNode(obj[key], key);
+const makeNode = (data, name, state = nodeStates.unchanged) => {
+  if (typeof data === 'object' && data !== null) {
+    const node = {
+      name,
+      isObject: true,
+      state,
+      children: [],
+    };
+    _.keys(data).forEach((key) => {
+      const child = makeNode(data[key], key);
       addChildren(node, child);
     });
-  } else {
-    setIsObject(node, false);
-    setValue(node, obj);
+    return node;
   }
-  return node;
+  return {
+    name,
+    value: data,
+    isObject: false,
+    state,
+    children: [],
+  };
 };
 
-const deepCopy = (node) => {
+const deepCopy = (node, state) => {
   const name = getName(node);
   if (!getIsObject(node)) {
-    return makeNode(getValue(node), name);
+    return makeNode(getValue(node), name, state);
   }
-  const copy = makeNode({}, name);
-  setState(copy, getState(node));
-  setIsObject(copy, getIsObject(node));
+  const copy = makeNode({}, name, state);
   getChildren(node).forEach((child) => {
     const copyChild = deepCopy(child);
     addChildren(copy, copyChild);
@@ -65,7 +59,6 @@ const deepCopy = (node) => {
 };
 
 const printArrayNode = (node, deep = 0) => {
-  const indent = ' ';
   const print = [];
   const name = getName(node);
   const state = getState(node);
@@ -76,8 +69,7 @@ const printArrayNode = (node, deep = 0) => {
     const firstString = (deep > 0) ? `${indent.repeat(4 * deep - 2)}${state} ${name}: {` : '{';
     print.push(firstString);
     children.forEach((child) => {
-      const printChild = printArrayNode(child, deep + 1);
-      print.push(...printChild);
+      print.push(...printArrayNode(child, deep + 1));
     });
     const lastString = (deep > 0) ? `${indent.repeat(4 * deep)}}` : '}';
     print.push(lastString);
@@ -96,37 +88,22 @@ const makeDiffChildren = (children1, children2) => {
     const child1 = _.find(children1, (child) => getName(child) === key);
     const child2 = _.find(children2, (child) => getName(child) === key);
     if (!child1) {
-      const addedNode = deepCopy(child2);
-      setState(addedNode, '+');
-      children.push(addedNode);
+      children.push(deepCopy(child2, nodeStates.added));
     } else if (!child2) {
-      const removedNode = deepCopy(child1);
-      setState(removedNode, '-');
-      children.push(removedNode);
+      children.push(deepCopy(child1, nodeStates.removed));
     } else if (getIsObject(child1) !== getIsObject(child2)) {
-      const removedNode = deepCopy(child1);
-      setState(removedNode, '-');
-      children.push(removedNode);
-      const addedNode = deepCopy(child2);
-      setState(addedNode, '+');
-      children.push(addedNode);
+      children.push(deepCopy(child1, nodeStates.removed));
+      children.push(deepCopy(child2, nodeStates.added));
     } else if (!getIsObject(child1) && !getIsObject(child2)) {
       if (getValue(child1) === getValue(child2)) {
-        const unchangedNode = deepCopy(child1);
-        children.push(unchangedNode);
+        children.push(deepCopy(child1, nodeStates.unchanged));
       } else {
-        const removedNode = deepCopy(child1);
-        setState(removedNode, '-');
-        children.push(removedNode);
-        const addedNode = deepCopy(child2);
-        setState(addedNode, '+');
-        children.push(addedNode);
+        children.push(deepCopy(child1, nodeStates.removed));
+        children.push(deepCopy(child2, nodeStates.added));
       }
     } else {
       const child = makeNode({}, key);
-      const subChildren1 = getChildren(child1);
-      const subChildren2 = getChildren(child2);
-      const subChildren = makeDiffChildren(subChildren1, subChildren2);
+      const subChildren = makeDiffChildren(getChildren(child1), getChildren(child2));
       subChildren.forEach((subChild) => addChildren(child, subChild));
       children.push(child);
     }
