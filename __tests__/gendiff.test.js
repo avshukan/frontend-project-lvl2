@@ -8,10 +8,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const getFixturesPath = (filename) => path.resolve(__dirname, '..', '__fixtures__', filename);
 const readFile = (filename) => fs.readFileSync(getFixturesPath(filename), 'utf-8');
-const handler = (filenameBefore, filenameAfter, filenameExpected) => {
+const handler = (filenameBefore, filenameAfter, filenameExpected, formatName = 'stylish') => {
   const fileBefore = parsers(getFixturesPath(filenameBefore));
   const fileAfter = parsers(getFixturesPath(filenameAfter));
-  const realResult = genDiff(fileBefore, fileAfter);
+  const realResult = genDiff(fileBefore, fileAfter, formatName);
   const expectedResult = readFile(filenameExpected);
   expect(realResult).toEqual(expectedResult);
 };
@@ -59,5 +59,12 @@ describe('deep yaml tests', () => {
 describe('deep json vs yaml tests', () => {
   test.each([
     ['deepFile1.json', 'deepFile1.yaml', 'deepJsonYamlDiff11.txt'],
+  ])('apply genDiff with %s & %s and expected %s', handler);
+});
+
+describe('tests for deep json files and plain formatter', () => {
+  test.each([
+    ['deepFile0.json', 'deepFile1.json', 'deepJsonPlainDiff01.txt', 'plain'],
+    ['deepFile1.json', 'deepFile2.json', 'deepJsonPlainDiff12.txt', 'plain'],
   ])('apply genDiff with %s & %s and expected %s', handler);
 });
