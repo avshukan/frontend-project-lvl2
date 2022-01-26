@@ -1,15 +1,6 @@
-// import {
-//   getName, getValue, getState, getIsObject, getChildren,
-// } from './genDiff.js';
-const getName = (node) => node.name;
-
-const getState = (node) => node.state;
-
-const getValue = (node) => node.value;
-
-const getIsObject = (node) => node.isObject;
-
-const getChildren = (node) => node.children;
+import {
+  getName, getValue, getState, getIsObject, getChildren,
+} from '../node.js';
 
 const indent = ' ';
 
@@ -34,6 +25,4 @@ const printArrayNode = (node, deep = 0) => {
   return print;
 };
 
-const stylish = (node) => printArrayNode(node).join('\n');
-
-export default stylish;
+export default (node) => printArrayNode(node).join('\n');

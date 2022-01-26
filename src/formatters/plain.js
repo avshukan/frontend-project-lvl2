@@ -1,18 +1,7 @@
-const nodeStates = {
-  added: '+',
-  removed: '-',
-  unchanged: ' ',
-};
-
-const getName = (node) => node.name;
-
-const getState = (node) => node.state;
-
-const getValue = (node) => node.value;
-
-const getIsObject = (node) => node.isObject;
-
-const getChildren = (node) => node.children;
+import {
+  nodeStates,
+  getName, getValue, getState, getIsObject, getChildren,
+} from '../node.js';
 
 const printArrayNode = (node, path = []) => {
   const print = [];
