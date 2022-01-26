@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import stylish from './stylish.js';
 
 const nodeStates = {
   added: '+',
@@ -86,7 +87,7 @@ const makeDiffChildren = (children1, children2) => {
   return children;
 };
 
-const genDiff = (obj1, obj2) => {
+const genDiff = (obj1, obj2, formatName) => {
   const node1 = makeNode(obj1);
   const node2 = makeNode(obj2);
   const diff = makeNode({});
@@ -94,7 +95,7 @@ const genDiff = (obj1, obj2) => {
   const children2 = getChildren(node2);
   const children = makeDiffChildren(children1, children2);
   children.forEach((child) => addChildren(diff, child));
-  return diff;
+  return stylish(diff);
 };
 
 export {

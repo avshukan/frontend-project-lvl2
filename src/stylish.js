@@ -25,6 +25,6 @@ const printArrayNode = (node, deep = 0) => {
   return print;
 };
 
-const printNode = (node) => printArrayNode(node).join('\n');
+const stylish = (node) => printArrayNode(node).join('\n');
 
-export default printNode;
+export default stylish;
