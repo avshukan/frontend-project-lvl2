@@ -2,7 +2,7 @@
 import { Command } from 'commander';
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
-import genDiff, { parsers } from '../index.js';
+import genDiff, { parser } from '../index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -24,8 +24,8 @@ program
   .arguments('<filepath1> <filepath2>')
   .action((filepath1, filepath2) => {
     try {
-      const obj1 = parsers(getPath(filepath1));
-      const obj2 = parsers(getPath(filepath2));
+      const obj1 = parser(getPath(filepath1));
+      const obj2 = parser(getPath(filepath2));
       const formatter = program.opts().format;
       const diff = genDiff(obj1, obj2, formatter);
       console.log(diff);

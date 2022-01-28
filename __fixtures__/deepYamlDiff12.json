@@ -1,0 +1,41 @@
+{
+    "isObject": true,
+    "state": " ",
+    "children": [
+      {
+        "name": "first",
+        "value": "first",
+        "isObject": false,
+        "state": " ",
+        "children": []
+      },
+      {
+        "name": "forth",
+        "value": "last",
+        "isObject": false,
+        "state": "+",
+        "children": []
+      },
+      {
+        "name": "second",
+        "value": "other",
+        "isObject": false,
+        "state": "-",
+        "children": []
+      },
+      {
+        "name": "second",
+        "value": "next",
+        "isObject": false,
+        "state": "+",
+        "children": []
+      },
+      {
+        "name": "third",
+        "value": "another",
+        "isObject": false,
+        "state": "-",
+        "children": []
+      }
+    ]
+  }
