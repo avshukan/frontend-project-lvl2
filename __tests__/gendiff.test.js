@@ -2,16 +2,22 @@ import fs from 'fs';
 import path, { dirname } from 'path';
 import { test, expect, describe } from '@jest/globals';
 import { fileURLToPath } from 'url';
-import genDiff, { parser } from '../index.js';
+import parser from '../src/parsers.js';
+import genDiff from '../index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
 const getFixturesPath = (filename) => path.resolve(__dirname, '..', '__fixtures__', filename);
+
 const readFile = (filename) => fs.readFileSync(getFixturesPath(filename), 'utf-8');
+
 const handler = (filenameBefore, filenameAfter, filenameExpected, formatName = 'stylish') => {
-  const fileBefore = parser(getFixturesPath(filenameBefore));
-  const fileAfter = parser(getFixturesPath(filenameAfter));
-  const realResult = genDiff(fileBefore, fileAfter, formatName);
+  const realResult = genDiff(
+    getFixturesPath(filenameBefore),
+    getFixturesPath(filenameAfter),
+    formatName,
+  );
   const expectedResult = readFile(filenameExpected);
   expect(realResult).toEqual(expectedResult);
 };
@@ -73,9 +79,11 @@ describe('tests for deep yaml files and json formatter', () => {
   test.each([
     ['file1.yaml', 'file2.yaml', 'deepYamlDiff12.json', 'json'],
   ])('apply genDiff with %s & %s and expected %s', (filenameBefore, filenameAfter, filenameExpected, formatName = 'stylish') => {
-    const fileBefore = parser(getFixturesPath(filenameBefore));
-    const fileAfter = parser(getFixturesPath(filenameAfter));
-    const realResult = genDiff(fileBefore, fileAfter, formatName);
+    const realResult = genDiff(
+      getFixturesPath(filenameBefore),
+      getFixturesPath(filenameAfter),
+      formatName,
+    );
     const expectedResult = JSON.stringify(parser(getFixturesPath(filenameExpected)));
     expect(realResult).toEqual(expectedResult);
   });

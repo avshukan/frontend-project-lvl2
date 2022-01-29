@@ -1,18 +1,6 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
-import { fileURLToPath } from 'url';
-import path, { dirname } from 'path';
-import genDiff, { parser } from '../index.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const getPath = (filename) => path.resolve(__dirname, filename);
-
-// Само чтение файлов нужно выполнять либо внутри тестов,
-// либо внутри хуков, например `beforeAll` или `beforeEach`.
-// Не стоит этого делать на уровне модуля, вне функций.
-// const html = await readFile('withLinks.html');
-// const json = await readFile('somethingElse.json');
+import genDiff from '../index.js';
 
 const program = new Command();
 
@@ -24,10 +12,8 @@ program
   .arguments('<filepath1> <filepath2>')
   .action((filepath1, filepath2) => {
     try {
-      const obj1 = parser(getPath(filepath1));
-      const obj2 = parser(getPath(filepath2));
       const formatter = program.opts().format;
-      const diff = genDiff(obj1, obj2, formatter);
+      const diff = genDiff(filepath1, filepath2, formatter);
       console.log(diff);
     } catch (e) {
       console.error('something was wrong...');

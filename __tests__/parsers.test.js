@@ -1,7 +1,7 @@
 import { test, expect, describe } from '@jest/globals';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { parser } from '../index.js';
+import parser from '../src/parsers.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

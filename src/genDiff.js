@@ -1,8 +1,12 @@
 import _ from 'lodash';
+import path from 'path';
+import parser from './parsers.js';
 import makeNode, {
   nodeStates, getName, getValue, getIsObject, getChildren, addChildren, deepCopy,
 } from './node.js';
 import formatters from './formatters/index.js';
+
+const getPath = (fileName) => path.resolve(process.cwd(), fileName);
 
 const makeDiffChildren = (children1, children2) => {
   const children = [];
@@ -34,7 +38,9 @@ const makeDiffChildren = (children1, children2) => {
   return children;
 };
 
-const genDiff = (obj1, obj2, formatName) => {
+const genDiff = (filepath1, filepath2, formatName) => {
+  const obj1 = parser(getPath(filepath1));
+  const obj2 = parser(getPath(filepath2));
   const node1 = makeNode(obj1);
   const node2 = makeNode(obj2);
   const formatter = formatters(formatName);
