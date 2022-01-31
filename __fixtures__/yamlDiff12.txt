@@ -1,7 +1,0 @@
-{
-    first: first
-  + forth: last
-  - second: other
-  + second: next
-  - third: another
-}

@@ -22,62 +22,28 @@ const handler = (filenameBefore, filenameAfter, filenameExpected, formatName = '
   expect(realResult).toEqual(expectedResult);
 };
 
-describe('json tests', () => {
+describe('tests stylish formatter', () => {
   test.each([
-    ['file0.json', 'file0.json', 'jsonDiff00.txt'],
-    ['file0.json', 'file1.json', 'jsonDiff01.txt'],
-    ['file0.json', 'file2.json', 'jsonDiff02.txt'],
-    ['file1.json', 'file0.json', 'jsonDiff10.txt'],
-    ['file1.json', 'file1.json', 'jsonDiff11.txt'],
-    ['file1.json', 'file2.json', 'jsonDiff12.txt'],
-    ['file2.json', 'file0.json', 'jsonDiff20.txt'],
-    ['file2.json', 'file1.json', 'jsonDiff21.txt'],
-    ['file2.json', 'file2.json', 'jsonDiff22.txt'],
+    ['file5.json', 'file5.json', 'diff55.stylish', 'stylish'],
+    ['file5.json', 'file6.json', 'diff56.stylish', 'stylish'],
+    ['file5.json', 'file7.yaml', 'diff57.stylish', 'stylish'],
+    ['file5.json', 'file8.yaml', 'diff58.stylish', 'stylish'],
+    ['file7.yaml', 'file7.yaml', 'diff77.stylish', 'stylish'],
   ])('apply genDiff with %s & %s and expected %s', handler);
 });
 
-describe('yaml tests', () => {
+describe('tests plain formatter', () => {
   test.each([
-    ['file0.yaml', 'file0.yaml', 'yamlDiff00.txt'],
-    ['file0.yaml', 'file1.yaml', 'yamlDiff01.txt'],
-    ['file0.yaml', 'file2.yaml', 'yamlDiff02.txt'],
-    ['file1.yaml', 'file0.yaml', 'yamlDiff10.txt'],
-    ['file1.yaml', 'file1.yaml', 'yamlDiff11.txt'],
-    ['file1.yaml', 'file2.yaml', 'yamlDiff12.txt'],
-    ['file2.yaml', 'file0.yaml', 'yamlDiff20.txt'],
-    ['file2.yaml', 'file1.yaml', 'yamlDiff21.txt'],
-    ['file2.yaml', 'file2.yaml', 'yamlDiff22.txt'],
+    ['file0.json', 'file0.json', 'diff00.plain', 'plain'],
+    ['file0.json', 'file7.yaml', 'diff07.plain', 'plain'],
+    ['file1.yaml', 'file5.json', 'diff15.plain', 'plain'],
+    ['file7.yaml', 'file6.json', 'diff76.plain', 'plain'],
   ])('apply genDiff with %s & %s and expected %s', handler);
 });
 
-describe('deep json tests', () => {
+describe('tests json formatter', () => {
   test.each([
-    ['deepFile1.json', 'deepFile2.json', 'deepJsonDiff12.txt'],
-  ])('apply genDiff with %s & %s and expected %s', handler);
-});
-
-describe('deep yaml tests', () => {
-  test.each([
-    ['deepFile1.yaml', 'deepFile2.yaml', 'deepYamlDiff12.txt'],
-  ])('apply genDiff with %s & %s and expected %s', handler);
-});
-
-describe('deep json vs yaml tests', () => {
-  test.each([
-    ['deepFile1.json', 'deepFile1.yaml', 'deepJsonYamlDiff11.txt'],
-  ])('apply genDiff with %s & %s and expected %s', handler);
-});
-
-describe('tests for deep json files and plain formatter', () => {
-  test.each([
-    ['deepFile0.json', 'deepFile1.json', 'deepJsonPlainDiff01.txt', 'plain'],
-    ['deepFile1.json', 'deepFile2.json', 'deepJsonPlainDiff12.txt', 'plain'],
-  ])('apply genDiff with %s & %s and expected %s', handler);
-});
-
-describe('tests for deep yaml files and json formatter', () => {
-  test.each([
-    ['file1.yaml', 'file2.yaml', 'deepYamlDiff12.json', 'json'],
+    ['file3.yaml', 'file4.json', 'diff34.json', 'json'],
   ])('apply genDiff with %s & %s and expected %s', (filenameBefore, filenameAfter, filenameExpected, formatName = 'stylish') => {
     const realResult = genDiff(
       getFixturesPath(filenameBefore),

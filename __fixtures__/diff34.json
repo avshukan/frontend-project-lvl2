@@ -6,12 +6,19 @@
         "name": "first",
         "value": "first",
         "isObject": false,
-        "state": " ",
+        "state": "-",
+        "children": []
+      },
+      {
+        "name": "first",
+        "value": "start",
+        "isObject": false,
+        "state": "+",
         "children": []
       },
       {
         "name": "forth",
-        "value": "last",
+        "value": "end",
         "isObject": false,
         "state": "+",
         "children": []
@@ -20,14 +27,7 @@
         "name": "second",
         "value": "other",
         "isObject": false,
-        "state": "-",
-        "children": []
-      },
-      {
-        "name": "second",
-        "value": "next",
-        "isObject": false,
-        "state": "+",
+        "state": " ",
         "children": []
       },
       {
