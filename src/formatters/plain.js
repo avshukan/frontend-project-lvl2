@@ -1,45 +1,39 @@
+import _ from 'lodash';
 import {
-  nodeStates,
-  getName, getValue, getState, getIsObject, getChildren,
-} from '../node.js';
+  diffStates, getName, getState, getValueBefore, getValueAfter, getChildren,
+} from '../diff';
 
-const printArrayNode = (node, path = []) => {
-  const print = [];
-  const children = getChildren(node);
-  const groups = children.reduce((acc, item) => {
-    const key = getName(item);
-    const group = acc[key] ? [...acc[key], item] : [item];
-    return { ...acc, [key]: group };
-  }, {});
-  Object.keys(groups).forEach((key) => {
-    const group = groups[key];
-    const prop = [...path, key].filter((item) => item !== undefined).join('.');
-    if (group.length === 1) {
-      const state = getState(group[0]);
-      const isObject = getIsObject(group[0]);
-      const value = getValue(group[0]);
-      const val = typeof value === 'string' ? `'${value}'` : value;
-      const v = isObject ? '[complex value]' : val;
-      if (state === nodeStates.removed) {
-        print.push(`Property '${prop}' was removed`);
-      }
-      if (state === nodeStates.added) {
-        print.push(`Property '${prop}' was added with value: ${v}`);
-      }
-      if (state === nodeStates.unchanged && isObject) {
-        print.push(...printArrayNode(group[0], [...path, key]));
-      }
-    } else {
-      const value1 = getValue(group[0]);
-      const val1 = typeof value1 === 'string' ? `'${value1}'` : value1;
-      const fromValue = getIsObject(group[0]) ? '[complex value]' : val1;
-      const value2 = getValue(group[1]);
-      const val2 = typeof value2 === 'string' ? `'${value2}'` : value2;
-      const toValue = getIsObject(group[1]) ? '[complex value]' : val2;
-      print.push(`Property '${prop}' was updated. From ${fromValue} to ${toValue}`);
-    }
-  });
-  return print;
+const formatValue = (value) => {
+  if (_.isPlainObject(value)) {
+    return '[complex value]';
+  }
+  if (typeof value === 'string') {
+    return `'${value}'`;
+  }
+  return value;
 };
 
-export default (node) => printArrayNode(node).join('\n');
+const getStringsArray = (diff, path = []) => {
+  const name = getName(diff);
+  const state = getState(diff);
+  const prop = [...path, name].filter((item) => item !== undefined).join('.');
+  const valueBefore = formatValue(getValueBefore(diff));
+  const valueAfter = formatValue(getValueAfter(diff));
+  const children = getChildren(diff);
+  if (state === diffStates.REMOVED) {
+    return [`Property '${prop}' was removed`];
+  }
+  if (state === diffStates.ADDED) {
+    return [`Property '${prop}' was added with value: ${valueAfter}`];
+  }
+  if (state === diffStates.CHANGED) {
+    return [`Property '${prop}' was updated. From ${valueBefore} to ${valueAfter}`];
+  }
+  if (children !== undefined) {
+    const result = children.map((child) => getStringsArray(child, [...path, name])).flat();
+    return result;
+  }
+  return [];
+};
+
+export default (diff) => getStringsArray(diff).join('\n');

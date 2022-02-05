@@ -24,6 +24,10 @@ const handler = (filenameBefore, filenameAfter, filenameExpected, formatName = '
 
 describe('tests stylish formatter', () => {
   test.each([
+    ['file0.json', 'file0.json', 'diff00.stylish', 'stylish'],
+    ['file0.json', 'file1.yaml', 'diff01.stylish', 'stylish'],
+    ['file0.json', 'file2.json', 'diff02.stylish', 'stylish'],
+    ['file1.yaml', 'file2.json', 'diff12.stylish', 'stylish'],
     ['file5.json', 'file5.json', 'diff55.stylish', 'stylish'],
     ['file5.json', 'file6.json', 'diff56.stylish', 'stylish'],
     ['file5.json', 'file7.yaml', 'diff57.stylish', 'stylish'],
@@ -44,13 +48,15 @@ describe('tests plain formatter', () => {
 describe('tests json formatter', () => {
   test.each([
     ['file3.yaml', 'file4.json', 'diff34.json', 'json'],
+    ['file7.yaml', 'file6.json', 'diff76.json', 'json'],
   ])('apply genDiff with %s & %s and expected %s', (filenameBefore, filenameAfter, filenameExpected, formatName = 'stylish') => {
-    const realResult = genDiff(
+    const diff = genDiff(
       getFixturesPath(filenameBefore),
       getFixturesPath(filenameAfter),
       formatName,
     );
-    const expectedResult = JSON.stringify(parser(getFixturesPath(filenameExpected)));
-    expect(realResult).toEqual(expectedResult);
+    const realResult = JSON.parse(diff);
+    const expectedResult = parser(getFixturesPath(filenameExpected));
+    expect(realResult).toMatchObject(expectedResult);
   });
 });
