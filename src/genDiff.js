@@ -9,8 +9,8 @@ const genDiff = (filepath1, filepath2, formatName) => {
   const obj1 = parser(getPath(filepath1));
   const obj2 = parser(getPath(filepath2));
   const formatter = formatters(formatName);
-  const diff = makeDiff(undefined, obj1, obj2);
-  const result = formatter(diff);
+  // const diff = makeDiff(undefined, obj1, obj2);
+  const result = formatter(makeDiff(undefined, obj1, obj2));
   return result;
 };
 
