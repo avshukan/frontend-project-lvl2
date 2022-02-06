@@ -10,7 +10,7 @@ const signs = {
   REMOVED: '-',
 };
 
-const getObjectArray = (data, deep) => Object.keys(data).sort().map((key) => {
+const getObjectArray = (data, deep) => _.sortBy(Object.keys(data)).map((key) => {
   if (_.isPlainObject(data[key])) {
     const firstString = `${indent.repeat(4 * deep)}${key}: {`;
     const content = getObjectArray(data[key], deep + 1);
@@ -49,7 +49,7 @@ const getStringsArray = (diff, deep = 0) => {
       return [`${indent.repeat(4 * deep)}${name}: ${getValueAfter(diff)}`];
     }
     const firstString = (deep > 0) ? `${indent.repeat(4 * deep)}${name}: {` : '{';
-    const content = children.sort().map((child) => getStringsArray(child, deep + 1));
+    const content = _.sortBy(children, 'name').map((child) => getStringsArray(child, deep + 1));
     const lastString = (deep > 0) ? `${indent.repeat(4 * deep)}}` : '}';
     return [firstString, ...content, lastString].flat();
   }

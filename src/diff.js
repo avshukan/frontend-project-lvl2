@@ -49,7 +49,7 @@ const makeDiff = (name, valueBefore, valueAfter) => {
     };
   }
   if (_.isPlainObject(valueBefore) && _.isPlainObject(valueAfter)) {
-    const keys = _.union(_.keys(valueBefore), _.keys(valueAfter)).sort();
+    const keys = _.sortBy(_.union(_.keys(valueBefore), _.keys(valueAfter)));
     const children = keys.map((key) => makeDiff(key, valueBefore[key], valueAfter[key]));
     return {
       name,

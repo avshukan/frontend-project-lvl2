@@ -12,20 +12,15 @@ const yamlParser = (filename) => {
 const parser = (filepath) => {
   const file = fs.readFileSync(filepath, 'utf-8');
   const format = path.extname(filepath);
-  let handler;
   switch (format) {
     case '.yaml':
     case '.yml':
-      handler = yamlParser;
-      break;
+      return yamlParser(file);
     case '.json':
-      handler = jsonParser;
-      break;
+      return jsonParser(file);
     default:
-      handler = () => { };
   }
-  const obj = handler(file);
-  return obj;
+  return undefined;
 };
 
 export default parser;
