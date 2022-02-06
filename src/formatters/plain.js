@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import {
   diffStates, getName, getState, getValueBefore, getValueAfter, getChildren,
-} from '../diff';
+} from '../diff.js';
 
 const formatValue = (value) => {
   if (_.isPlainObject(value)) {

@@ -14,3 +14,10 @@ $ cd frontend-project-lvl2/
 $ make install
 $ npm link
 ```
+
+### Use
+Run ```gendiff```
+
+**Demonstration**:
+
+[![asciicast](https://asciinema.org/a/466903.svg)](https://asciinema.org/a/466903)
