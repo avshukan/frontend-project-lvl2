@@ -11,14 +11,9 @@ program
   .option('-f, --format [type]', 'output format', 'stylish')
   .arguments('<filepath1> <filepath2>')
   .action((filepath1, filepath2) => {
-    try {
-      const formatter = program.opts().format;
-      const diff = genDiff(filepath1, filepath2, formatter);
-      console.log(diff);
-    } catch (e) {
-      console.error('something was wrong...');
-      console.error(e);
-    }
+    const formatter = program.opts().format;
+    const diff = genDiff(filepath1, filepath2, formatter);
+    console.log(diff);
   });
 
 program.parse();
