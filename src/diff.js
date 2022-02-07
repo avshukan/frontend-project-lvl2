@@ -1,79 +1,61 @@
 import _ from 'lodash';
 
-/*
-1. UNDEFINED -> SIMPLE|COMPLEX
-- ADDED WITH AFTER
-2. SIMPLE|COMPLEX -> UNDEFINED
-- REMOVED WITH BEFORE
-3. SIMPLE -> SIMPLE
-- CHANGED WITH BEFORE & AFTER
-- UNCHANGED WITH AFTER
-4. SIMPLE -> COMPLEX
-- CHANGED WITH BEFORE & AFTER
-5. COMPLEX -> SIMPLE
-- CHANGED WITH BEFORE & AFTER
-6. COMPLEX -> COMPLEX
-- UNCHANGED WITH CHILDREN
-*/
-
 const diffStates = {
   UNCHANGED: 'UNCHANGED',
   ADDED: 'ADDED',
   REMOVED: 'REMOVED',
   CHANGED: 'CHANGED',
+  COMPLEX: 'COMPLEX',
 };
 
 const getName = (diff) => diff.name;
 
 const getState = (diff) => diff.state;
 
-const getValueBefore = (diff) => diff.valueBefore;
+const getValue = (diff) => diff.value;
 
-const getValueAfter = (diff) => diff.valueAfter;
-
-const getChildren = (diff) => diff.children;
-
-const makeDiff = (name, valueBefore, valueAfter) => {
-  if (valueBefore === undefined) {
+const makeDiff = (obj1, obj2) => {
+  const keys = _.sortBy(_.union(_.keys(obj1), _.keys(obj2)));
+  const result = keys.map((name) => {
+    if (!_.has(obj1, name)) {
+      return {
+        name,
+        state: diffStates.ADDED,
+        value: _.cloneDeep(obj2[name]),
+      };
+    }
+    if (!_.has(obj2, name)) {
+      return {
+        name,
+        state: diffStates.REMOVED,
+        valueBefore: _.cloneDeep(obj1[name]),
+      };
+    }
+    if (_.isPlainObject(obj1[name]) && _.isPlainObject(obj2[name])) {
+      return {
+        name,
+        state: diffStates.COMPLEX,
+        value: makeDiff(obj1[name], obj2[name]),
+      };
+    }
+    if (obj1 === obj2) {
+      return {
+        name,
+        state: diffStates.UNCHANGED,
+        value: obj1[name],
+      };
+    }
     return {
       name,
-      state: diffStates.ADDED,
-      valueAfter: _.cloneDeep(valueAfter),
+      state: diffStates.CHANGED,
+      value: { before: obj1[name], after: obj2[name] },
     };
-  }
-  if (valueAfter === undefined) {
-    return {
-      name,
-      state: diffStates.REMOVED,
-      valueBefore: _.cloneDeep(valueBefore),
-    };
-  }
-  if (_.isPlainObject(valueBefore) && _.isPlainObject(valueAfter)) {
-    const keys = _.sortBy(_.union(_.keys(valueBefore), _.keys(valueAfter)));
-    const children = keys.map((key) => makeDiff(key, valueBefore[key], valueAfter[key]));
-    return {
-      name,
-      state: diffStates.UNCHANGED,
-      children,
-    };
-  }
-  if (valueBefore === valueAfter) {
-    return {
-      name,
-      state: diffStates.UNCHANGED,
-      valueAfter,
-    };
-  }
-  return {
-    name,
-    state: diffStates.CHANGED,
-    valueBefore,
-    valueAfter,
-  };
+  });
+  return result;
 };
 
 export {
-  diffStates, getName, getState, getValueBefore, getValueAfter, getChildren,
+  diffStates, getName, getState, getValue,
 };
 
 export default makeDiff;
