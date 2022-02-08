@@ -24,9 +24,7 @@ const printValue = (value, prefix, deep) => {
 };
 
 const getStrings = (diff, deep = 1) => {
-  console.log('deep, diff', deep, diff);
   const result = diff.map(({ name, state, value }) => {
-    console.log('{ name, state, value }', name, state, value);
     if (state === diffStates.COMPLEX) {
       const firstString = `${INDENT.repeat(4 * deep)}${name}: {`;
       const content = getStrings(value, deep + 1).flat();
@@ -46,12 +44,7 @@ const getStrings = (diff, deep = 1) => {
     const prefix = `${INDENT.repeat(4 * deep - 2)}${sign}${INDENT}${name}`;
     return printValue(value, prefix, deep);
   });
-  console.log('result', result);
   return result;
 };
 
-export default (diff) => {
-  const x = ['{', getStrings(diff).flat(), '}'].flat();
-  console.log('x', x);
-  return x.join('\n');
-};
+export default (diff) => ['{', getStrings(diff).flat(), '}'].flat().join('\n');

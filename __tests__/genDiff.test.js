@@ -2,8 +2,8 @@ import fs from 'fs';
 import path, { dirname } from 'path';
 import { test, expect, describe } from '@jest/globals';
 import { fileURLToPath } from 'url';
+import genDiff, { getData, getFormat } from '../src/genDiff.js';
 import parser from '../src/parsers.js';
-import genDiff from '../index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -13,11 +13,9 @@ const getFixturesPath = (filename) => path.resolve(__dirname, '..', '__fixtures_
 const readFile = (filename) => fs.readFileSync(getFixturesPath(filename), 'utf-8');
 
 const handler = (filenameBefore, filenameAfter, filenameExpected, formatName = 'stylish') => {
-  const realResult = genDiff(
-    getFixturesPath(filenameBefore),
-    getFixturesPath(filenameAfter),
-    formatName,
-  );
+  const path1 = getFixturesPath(filenameBefore);
+  const path2 = getFixturesPath(filenameAfter);
+  const realResult = genDiff(path1, path2, formatName);
   const expectedResult = readFile(filenameExpected);
   expect(realResult).toEqual(expectedResult);
 };
@@ -59,7 +57,10 @@ describe('tests json formatter', () => {
       formatName,
     );
     const realResult = JSON.parse(diff);
-    const expectedResult = parser(getFixturesPath(filenameExpected));
+    const expectedResult = parser(
+      getData(getFixturesPath(filenameExpected)),
+      getFormat(getFixturesPath(filenameExpected)),
+    );
     expect(realResult).toMatchObject(expectedResult);
   });
 });
