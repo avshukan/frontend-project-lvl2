@@ -13,27 +13,25 @@ const formatValue = (value) => {
   return value;
 };
 
-const getStringsArray = (diff, path = []) => {
-  const name = getName(diff);
-  const state = getState(diff);
-  const prop = [...path, name].filter((item) => item !== undefined).join('.');
-  const valueBefore = formatValue(getValueBefore(diff));
-  const valueAfter = formatValue(getValueAfter(diff));
-  const children = getChildren(diff);
-  if (state === diffStates.REMOVED) {
-    return [`Property '${prop}' was removed`];
-  }
-  if (state === diffStates.ADDED) {
-    return [`Property '${prop}' was added with value: ${valueAfter}`];
-  }
-  if (state === diffStates.CHANGED) {
-    return [`Property '${prop}' was updated. From ${valueBefore} to ${valueAfter}`];
-  }
-  if (children !== undefined) {
-    const result = children.map((child) => getStringsArray(child, [...path, name])).flat();
-    return result;
-  }
-  return [];
+const getStrings = (diff, path = []) => {
+  const result = diff.map(({ name, state, value }) => {
+    const prop = [...path, name].filter((item) => item !== undefined).join('.');
+    if (state === diffStates.COMPLEX) {
+      return getStrings(value, [...path, name]).flat();
+    }
+    if (state === diffStates.REMOVED) {
+      return [`Property '${prop}' was removed`];
+    }
+    if (state === diffStates.ADDED) {
+      return [`Property '${prop}' was added with value: ${formatValue(value)}`];
+    }
+    if (state === diffStates.CHANGED) {
+      const [before, after] = value;
+      return [`Property '${prop}' was updated. From ${formatValue(before)} to ${formatValue(after)}`];
+    }
+    return [];
+  });
+  return result.flat();
 };
 
-export default (diff) => getStringsArray(diff).join('\n');
+export default (diff) => getStrings(diff).join('\n');

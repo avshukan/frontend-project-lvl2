@@ -36,14 +36,14 @@ describe('tests stylish formatter', () => {
   ])('apply genDiff with %s & %s and expected %s', handler);
 });
 
-// describe('tests plain formatter', () => {
-//   test.each([
-//     ['file0.json', 'file0.json', 'diff00.plain', 'plain'],
-//     ['file0.json', 'file7.yaml', 'diff07.plain', 'plain'],
-//     ['file1.yaml', 'file5.json', 'diff15.plain', 'plain'],
-//     ['file7.yaml', 'file6.json', 'diff76.plain', 'plain'],
-//   ])('apply genDiff with %s & %s and expected %s', handler);
-// });
+describe('tests plain formatter', () => {
+  test.each([
+    ['file0.json', 'file0.json', 'diff00.plain', 'plain'],
+    ['file0.json', 'file7.yaml', 'diff07.plain', 'plain'],
+    ['file1.yaml', 'file5.json', 'diff15.plain', 'plain'],
+    ['file7.yaml', 'file6.json', 'diff76.plain', 'plain'],
+  ])('apply genDiff with %s & %s and expected %s', handler);
+});
 
 describe('tests json formatter', () => {
   test.each([

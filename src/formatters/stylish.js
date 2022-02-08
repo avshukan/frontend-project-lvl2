@@ -33,18 +33,18 @@ const getStrings = (diff, deep = 1) => {
       const lastString = `${INDENT.repeat(4 * deep)}}`;
       return [firstString, ...content, lastString].flat();
     }
-    if (state === diffStates.ADDED || state === diffStates.REMOVED || state === diffStates.UNCHANGED) {
-      const sign = signs[state];
-      const prefix = `${INDENT.repeat(4 * deep - 2)}${sign}${INDENT}${name}`;
-      return printValue(value, prefix, deep);
+    if (state === diffStates.CHANGED) {
+      const [before, after] = value;
+      const stringsBefore = printValue(before, `${INDENT.repeat(4 * deep - 2)}${signs[diffStates.REMOVED]} ${name}`, deep);
+      const stringsAfter = printValue(after, `${INDENT.repeat(4 * deep - 2)}${signs[diffStates.ADDED]} ${name}`, deep);
+      return [
+        ...stringsBefore,
+        ...stringsAfter,
+      ].flat();
     }
-    const [before, after] = value;
-    const stringsBefore = printValue(before, `${INDENT.repeat(4 * deep - 2)}${signs[diffStates.REMOVED]} ${name}`, deep);
-    const stringsAfter = printValue(after, `${INDENT.repeat(4 * deep - 2)}${signs[diffStates.ADDED]} ${name}`, deep);
-    return [
-      ...stringsBefore,
-      ...stringsAfter,
-    ].flat();
+    const sign = signs[state];
+    const prefix = `${INDENT.repeat(4 * deep - 2)}${sign}${INDENT}${name}`;
+    return printValue(value, prefix, deep);
   });
   console.log('result', result);
   return result;
