@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import {
-  diffStates, getName, getState, getValue,
+  diffStates,
 } from '../diff.js';
 
 const formatValue = (value) => {

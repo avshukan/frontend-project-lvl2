@@ -1,119 +1,83 @@
-{
-    "state": "UNCHANGED",
-    "children": [
-        {
-            "name": "common",
-            "state": "UNCHANGED",
-            "children": [
-                {
-                    "name": "follow",
-                    "state": "ADDED",
-                    "valueAfter": false
-                },
-                {
-                    "name": "setting1",
-                    "state": "UNCHANGED",
-                    "valueAfter": "Value 1"
-                },
-                {
-                    "name": "setting2",
-                    "state": "REMOVED",
-                    "valueBefore": 200
-                },
-                {
-                    "name": "setting3",
-                    "state": "CHANGED",
-                    "valueBefore": true,
-                    "valueAfter": null
-                },
-                {
-                    "name": "setting4",
-                    "state": "ADDED",
-                    "valueAfter": "blah blah"
-                },
-                {
-                    "name": "setting5",
-                    "state": "ADDED",
-                    "valueAfter": {
-                        "key5": "value5"
+[
+    {
+        "name": "common",
+        "state": "COMPLEX",
+        "value": [
+            {
+                "name": "follow",
+                "state": "ADDED",
+                "value": false
+            }, {
+                "name": "setting1",
+                "state": "UNCHANGED",
+                "value": "Value 1"
+            }, {
+                "name": "setting2",
+                "state": "REMOVED",
+                "value": 200
+            }, {
+                "name": "setting3",
+                "state": "CHANGED",
+                "value": [true, null]
+            }, {
+                "name": "setting4",
+                "state": "ADDED",
+                "value": "blah blah"
+            }, {
+                "name": "setting5",
+                "state": "ADDED",
+                "value": { "key5": "value5" }
+            }, {
+                "name": "setting6",
+                "state": "COMPLEX",
+                "value": [
+                    {
+                        "name": "doge",
+                        "state": "COMPLEX",
+                        "value": [
+                            {
+                                "name": "wow",
+                                "state": "CHANGED",
+                                "value": ["", "so much"]
+                            }
+                        ]
+                    }, {
+                        "name": "key",
+                        "state": "UNCHANGED",
+                        "value": "value"
+                    }, {
+                        "name": "ops",
+                        "state": "ADDED",
+                        "value": "vops"
                     }
-                },
-                {
-                    "name": "setting6",
-                    "state": "UNCHANGED",
-                    "children": [
-                        {
-                            "name": "doge",
-                            "state": "UNCHANGED",
-                            "children": [
-                                {
-                                    "name": "wow",
-                                    "state": "CHANGED",
-                                    "valueBefore": "",
-                                    "valueAfter": "so much"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "key",
-                            "state": "UNCHANGED",
-                            "valueAfter": "value"
-                        },
-                        {
-                            "name": "ops",
-                            "state": "ADDED",
-                            "valueAfter": "vops"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "group1",
-            "state": "UNCHANGED",
-            "children": [
-                {
-                    "name": "baz",
-                    "state": "CHANGED",
-                    "valueBefore": "bas",
-                    "valueAfter": "bars"
-                },
-                {
-                    "name": "foo",
-                    "state": "UNCHANGED",
-                    "valueAfter": "bar"
-                },
-                {
-                    "name": "nest",
-                    "state": "CHANGED",
-                    "valueBefore": {
-                        "key": "value"
-                    },
-                    "valueAfter": "str"
-                }
-            ]
-        },
-        {
-            "name": "group2",
-            "state": "REMOVED",
-            "valueBefore": {
-                "abc": 12345,
-                "deep": {
-                    "id": 45
-                }
+                ]
             }
-        },
-        {
-            "name": "group3",
-            "state": "ADDED",
-            "valueAfter": {
-                "deep": {
-                    "id": {
-                        "number": 45
-                    }
-                },
-                "fee": 100500
+        ]
+    }, {
+        "name": "group1",
+        "state": "COMPLEX",
+        "value": [
+            {
+                "name": "baz",
+                "state": "CHANGED",
+                "value": ["bas", "bars"]
+            }, {
+                "name": "foo",
+                "state": "UNCHANGED",
+                "value": "bar"
+            }, {
+                "name": "nest",
+                "state": "CHANGED",
+                "value": [{ "key": "value" }, "str"]
             }
-        }
-    ]
-}
+        ]
+    }, {
+        "name": "group2",
+        "state": "REMOVED",
+        "value": {"abc": 12345, "deep": {"id": 45}}
+    }, {
+        "name": "group3",
+        "state": "ADDED",
+        "value": {"deep": {"id": {"number": 45}}, "fee": 100500}
+    }
+]

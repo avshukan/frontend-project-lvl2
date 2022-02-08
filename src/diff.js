@@ -8,14 +8,11 @@ const diffStates = {
   COMPLEX: 'COMPLEX',
 };
 
-const getName = (diff) => diff.name;
-
-const getState = (diff) => diff.state;
-
-const getValue = (diff) => diff.value;
-
 const makeDiff = (obj1, obj2) => {
   const keys = _.sortBy(_.union(_.keys(obj1), _.keys(obj2)));
+  console.log('obj1', obj1);
+  console.log('obj2', obj2);
+  console.log('keys', keys);
   const result = keys.map((name) => {
     if (!_.has(obj1, name)) {
       return {
@@ -28,7 +25,7 @@ const makeDiff = (obj1, obj2) => {
       return {
         name,
         state: diffStates.REMOVED,
-        valueBefore: _.cloneDeep(obj1[name]),
+        value: _.cloneDeep(obj1[name]),
       };
     }
     if (_.isPlainObject(obj1[name]) && _.isPlainObject(obj2[name])) {
@@ -38,7 +35,7 @@ const makeDiff = (obj1, obj2) => {
         value: makeDiff(obj1[name], obj2[name]),
       };
     }
-    if (obj1 === obj2) {
+    if (obj1[name] === obj2[name]) {
       return {
         name,
         state: diffStates.UNCHANGED,
@@ -48,14 +45,14 @@ const makeDiff = (obj1, obj2) => {
     return {
       name,
       state: diffStates.CHANGED,
-      value: { before: obj1[name], after: obj2[name] },
+      value: [obj1[name], obj2[name]],
     };
   });
   return result;
 };
 
 export {
-  diffStates, getName, getState, getValue,
+  diffStates,
 };
 
 export default makeDiff;

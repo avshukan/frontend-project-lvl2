@@ -9,6 +9,7 @@ const signs = {
   [diffStates.ADDED]: '+',
   [diffStates.REMOVED]: '-',
   [diffStates.UNCHANGED]: INDENT,
+  [diffStates.COMPLEX]: INDENT,
 };
 
 const getObjectArray = (data, deep) => _.sortBy(Object.keys(data)).map((key) => {
@@ -21,21 +22,25 @@ const getObjectArray = (data, deep) => _.sortBy(Object.keys(data)).map((key) => 
   return [`${INDENT.repeat(4 * deep)}${key}: ${data[key]}`];
 });
 
-const getStrings = (diff, deep = 0) => {
+const getStrings = (diff, deep = 1) => {
+  console.log('diff', diff);
+  console.log('deep', deep);
   const result = diff.map(({ name, state, value }) => {
     if (state === diffStates.ADDED || state === diffStates.REMOVED || state === diffStates.UNCHANGED || state === diffStates.COMPLEX) {
       const sign = signs[state];
-      if (_.isPlainObject(value)) {
-        const firstString = (deep > 0) ? `${INDENT.repeat(4 * deep - 2)}${sign} ${name}: {` : '{';
+      const prefix = (deep > 0) ? `${INDENT.repeat(4 * deep - 2)}${sign}${INDENT}` : '';
+      const postfix = `${INDENT.repeat(4 * deep)}`;
+      if (state === diffStates.COMPLEX) {
+        const firstString = (deep > 0) ? `${prefix}${name}: {` : '{';
         const content = (state === diffStates.COMPLEX)
           ? _.sortBy(value, 'name').map((child) => getStrings(child, deep + 1))
           : getObjectArray(value, deep + 1);
-        const lastString = (deep > 0) ? `${INDENT.repeat(4 * deep)}}` : '}';
+        const lastString = (deep > 0) ? `${postfix}}` : '}';
         return [firstString, ...content, lastString].flat();
       }
-      return [`${INDENT.repeat(4 * deep - 2)}${sign} ${name}: ${value}`];
+      return [`${prefix}${name}: ${value}`];
     }
-    const { before, after } = value;
+    const [before, after] = value;
     const stringsBefore = (_.isPlainObject(before))
       ? [
         `${INDENT.repeat(4 * deep - 2)}${signs[diffStates.REMOVED]} ${name}: {`,
@@ -55,7 +60,7 @@ const getStrings = (diff, deep = 0) => {
       ...stringsAfter,
     ].flat();
   });
-  return result.flat();
+  return ['{', result, '}'].flat();
 };
 
 export default (diff) => getStrings(diff).join('\n');

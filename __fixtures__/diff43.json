@@ -1,0 +1,19 @@
+[
+  {
+    "name": "first",
+    "state": "CHANGED",
+    "value": ["start", "first"]
+  }, {
+    "name": "forth",
+    "state": "REMOVED",
+    "value": "end"
+  }, {
+    "name": "second",
+    "state": "UNCHANGED",
+    "value": "other"
+  }, {
+    "name": "third",
+    "state": "ADDED",
+    "value": "another"
+  }
+]

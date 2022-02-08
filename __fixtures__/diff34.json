@@ -1,26 +1,6 @@
-{
-  "state": "UNCHANGED",
-  "children": [
-    {
-      "name": "first",
-      "state": "CHANGED",
-      "valueBefore": "first",
-      "valueAfter": "start"
-    },
-    {
-      "name": "forth",
-      "state": "ADDED",
-      "valueAfter": "end"
-    },
-    {
-      "name": "second",
-      "state": "UNCHANGED",
-      "valueAfter": "other"
-    },
-    {
-      "name": "third",
-      "state": "REMOVED",
-      "valueBefore": "another"
-    }
-  ]
-}
+[
+    {"name": "first", "state": "CHANGED", "value": ["first", "start"]},
+    {"name": "forth", "state": "ADDED", "value": "end"},
+    {"name": "second", "state": "UNCHANGED", "value": "other"},
+    {"name": "third", "state": "REMOVED", "value": "another"}
+]

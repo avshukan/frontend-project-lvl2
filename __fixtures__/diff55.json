@@ -1,0 +1,85 @@
+[
+  {
+    "name": "common",
+    "state": "COMPLEX",
+    "value": [
+      {
+        "name": "setting1",
+        "state": "UNCHANGED",
+        "value": "Value 1"
+      }, {
+        "name": "setting2",
+        "state": "UNCHANGED",
+        "value": 200
+      }, {
+        "name": "setting3",
+        "state": "UNCHANGED",
+        "value": true
+      }, {
+        "name": "setting6",
+        "state": "COMPLEX",
+        "value": [
+          {
+            "name": "doge",
+            "state": "COMPLEX",
+            "value": [
+              {
+                "name": "wow",
+                "state": "UNCHANGED",
+                "value": ""
+              }
+            ]
+          }, {
+            "name": "key",
+            "state": "UNCHANGED",
+            "value": "value"
+          }
+        ]
+      }
+    ]
+  }, {
+    "name": "group1",
+    "state": "COMPLEX",
+    "value": [
+      {
+        "name": "baz",
+        "state": "UNCHANGED",
+        "value": "bas"
+      }, {
+        "name": "foo",
+        "state": "UNCHANGED",
+        "value": "bar"
+      }, {
+        "name": "nest",
+        "state": "COMPLEX",
+        "value": [
+          {
+            "name": "key",
+            "state": "UNCHANGED",
+            "value": "value"
+          }
+        ]
+      }
+    ]
+  }, {
+    "name": "group2",
+    "state": "COMPLEX",
+    "value": [
+      {
+        "name": "abc",
+        "state": "UNCHANGED",
+        "value": 12345
+      }, {
+        "name": "deep",
+        "state": "COMPLEX",
+        "value": [
+          {
+            "name": "id",
+            "state": "UNCHANGED",
+            "value": 45
+          }
+        ]
+      }
+    ]
+  }
+]
