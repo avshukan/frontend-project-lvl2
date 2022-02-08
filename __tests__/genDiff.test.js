@@ -22,19 +22,19 @@ const handler = (filenameBefore, filenameAfter, filenameExpected, formatName = '
   expect(realResult).toEqual(expectedResult);
 };
 
-// describe('tests stylish formatter', () => {
-//   test.each([
-//     ['file0.json', 'file0.json', 'diff00.stylish', 'stylish'],
-//     ['file0.json', 'file1.yaml', 'diff01.stylish', 'stylish'],
-//     ['file0.json', 'file2.json', 'diff02.stylish', 'stylish'],
-//     ['file1.yaml', 'file2.json', 'diff12.stylish', 'stylish'],
-//     ['file5.json', 'file5.json', 'diff55.stylish', 'stylish'],
-//     ['file5.json', 'file6.json', 'diff56.stylish', 'stylish'],
-//     ['file5.json', 'file7.yaml', 'diff57.stylish', 'stylish'],
-//     ['file5.json', 'file8.yaml', 'diff58.stylish', 'stylish'],
-//     ['file7.yaml', 'file7.yaml', 'diff77.stylish', 'stylish'],
-//   ])('apply genDiff with %s & %s and expected %s', handler);
-// });
+describe('tests stylish formatter', () => {
+  test.each([
+    ['file0.json', 'file0.json', 'diff00.stylish', 'stylish'],
+    ['file0.json', 'file1.yaml', 'diff01.stylish', 'stylish'],
+    ['file0.json', 'file2.json', 'diff02.stylish', 'stylish'],
+    ['file1.yaml', 'file2.json', 'diff12.stylish', 'stylish'],
+    ['file5.json', 'file5.json', 'diff55.stylish', 'stylish'],
+    ['file5.json', 'file6.json', 'diff56.stylish', 'stylish'],
+    ['file5.json', 'file7.yaml', 'diff57.stylish', 'stylish'],
+    ['file5.json', 'file8.yaml', 'diff58.stylish', 'stylish'],
+    ['file7.yaml', 'file7.yaml', 'diff77.stylish', 'stylish'],
+  ])('apply genDiff with %s & %s and expected %s', handler);
+});
 
 // describe('tests plain formatter', () => {
 //   test.each([
@@ -61,8 +61,5 @@ describe('tests json formatter', () => {
     const realResult = JSON.parse(diff);
     const expectedResult = parser(getFixturesPath(filenameExpected));
     expect(realResult).toMatchObject(expectedResult);
-    // const realResult = diff;
-    // const expectedResult = JSON.stringify(parser(getFixturesPath(filenameExpected)));
-    // expect(realResult).toEqual(expectedResult);
   });
 });

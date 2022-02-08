@@ -12,55 +12,46 @@ const signs = {
   [diffStates.COMPLEX]: INDENT,
 };
 
-const getObjectArray = (data, deep) => _.sortBy(Object.keys(data)).map((key) => {
-  if (_.isPlainObject(data[key])) {
-    const firstString = `${INDENT.repeat(4 * deep)}${key}: {`;
-    const content = getObjectArray(data[key], deep + 1);
-    const lastString = `${INDENT.repeat(4 * deep)}}`;
-    return [firstString, ...content, lastString].flat();
+const printValue = (value, prefix, deep) => {
+  if (_.isPlainObject(value)) {
+    return [
+      `${prefix}: {`,
+      ..._.sortBy(Object.keys(value)).map((key) => printValue(value[key], `${INDENT.repeat(4 * deep + 4)}${key}`, deep + 1)),
+      `${INDENT.repeat(4 * deep)}}`,
+    ].flat();
   }
-  return [`${INDENT.repeat(4 * deep)}${key}: ${data[key]}`];
-});
+  return [`${prefix}: ${value}`];
+};
 
 const getStrings = (diff, deep = 1) => {
-  console.log('diff', diff);
-  console.log('deep', deep);
+  console.log('deep, diff', deep, diff);
   const result = diff.map(({ name, state, value }) => {
-    if (state === diffStates.ADDED || state === diffStates.REMOVED || state === diffStates.UNCHANGED || state === diffStates.COMPLEX) {
+    console.log('{ name, state, value }', name, state, value);
+    if (state === diffStates.COMPLEX) {
+      const firstString = `${INDENT.repeat(4 * deep)}${name}: {`;
+      const content = getStrings(value, deep + 1).flat();
+      const lastString = `${INDENT.repeat(4 * deep)}}`;
+      return [firstString, ...content, lastString].flat();
+    }
+    if (state === diffStates.ADDED || state === diffStates.REMOVED || state === diffStates.UNCHANGED) {
       const sign = signs[state];
-      const prefix = (deep > 0) ? `${INDENT.repeat(4 * deep - 2)}${sign}${INDENT}` : '';
-      const postfix = `${INDENT.repeat(4 * deep)}`;
-      if (state === diffStates.COMPLEX) {
-        const firstString = (deep > 0) ? `${prefix}${name}: {` : '{';
-        const content = (state === diffStates.COMPLEX)
-          ? _.sortBy(value, 'name').map((child) => getStrings(child, deep + 1))
-          : getObjectArray(value, deep + 1);
-        const lastString = (deep > 0) ? `${postfix}}` : '}';
-        return [firstString, ...content, lastString].flat();
-      }
-      return [`${prefix}${name}: ${value}`];
+      const prefix = `${INDENT.repeat(4 * deep - 2)}${sign}${INDENT}${name}`;
+      return printValue(value, prefix, deep);
     }
     const [before, after] = value;
-    const stringsBefore = (_.isPlainObject(before))
-      ? [
-        `${INDENT.repeat(4 * deep - 2)}${signs[diffStates.REMOVED]} ${name}: {`,
-        ...getObjectArray(before, deep + 1),
-        `${INDENT.repeat(4 * deep)}}`,
-      ].flat()
-      : [`${INDENT.repeat(4 * deep - 2)}${signs[diffStates.REMOVED]} ${name}: ${before}`];
-    const stringsAfter = (_.isPlainObject(after))
-      ? [
-        `${INDENT.repeat(4 * deep - 2)}${signs[diffStates.ADDED]} ${name}: {`,
-        ...getObjectArray(after, deep + 1),
-        `${INDENT.repeat(4 * deep)}}`,
-      ].flat()
-      : [`${INDENT.repeat(4 * deep - 2)}${signs[diffStates.ADDED]} ${name}: ${after}`];
+    const stringsBefore = printValue(before, `${INDENT.repeat(4 * deep - 2)}${signs[diffStates.REMOVED]} ${name}`, deep);
+    const stringsAfter = printValue(after, `${INDENT.repeat(4 * deep - 2)}${signs[diffStates.ADDED]} ${name}`, deep);
     return [
       ...stringsBefore,
       ...stringsAfter,
     ].flat();
   });
-  return ['{', result, '}'].flat();
+  console.log('result', result);
+  return result;
 };
 
-export default (diff) => getStrings(diff).join('\n');
+export default (diff) => {
+  const x = ['{', getStrings(diff).flat(), '}'].flat();
+  console.log('x', x);
+  return x.join('\n');
+};

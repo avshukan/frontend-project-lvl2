@@ -10,9 +10,6 @@ const diffStates = {
 
 const makeDiff = (obj1, obj2) => {
   const keys = _.sortBy(_.union(_.keys(obj1), _.keys(obj2)));
-  console.log('obj1', obj1);
-  console.log('obj2', obj2);
-  console.log('keys', keys);
   const result = keys.map((name) => {
     if (!_.has(obj1, name)) {
       return {
