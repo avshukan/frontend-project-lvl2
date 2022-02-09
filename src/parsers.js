@@ -15,8 +15,8 @@ const parser = (data, format) => {
     case '.json':
       return jsonParser(data);
     default:
+      throw new Error('Invalid extension');
   }
-  return undefined;
 };
 
 export default parser;

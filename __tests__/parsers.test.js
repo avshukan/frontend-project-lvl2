@@ -43,8 +43,12 @@ describe('parsers', () => {
   });
 
   test('default', () => {
-    const filename = 'file';
-    const realResult = parser(getFixturesPath(filename));
-    expect(realResult).toBeUndefined();
+    try {
+      const filename = 'file';
+      parser(getFixturesPath(filename));
+      expect(true).toBe(false);
+    } catch (error) {
+      expect(error.message).toBe('Invalid extension');
+    }
   });
 });
