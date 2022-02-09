@@ -43,12 +43,10 @@ describe('parsers', () => {
   });
 
   test('default', () => {
-    try {
-      const filename = 'file';
-      parser(getFixturesPath(filename));
-      expect(true).toBe(false);
-    } catch (error) {
-      expect(error.message).toBe('Invalid extension');
-    }
+    const filename = 'file';
+    const filepath = getFixturesPath(filename);
+    const data = getData(filepath);
+    const format = getFormat(filepath);
+    expect(() => parser(data, format)).toThrow('Invalid extension');
   });
 });
