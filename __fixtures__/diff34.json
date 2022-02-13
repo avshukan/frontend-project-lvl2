@@ -1,6 +1,0 @@
-[
-    {"name": "first", "state": "CHANGED", "value": ["first", "start"]},
-    {"name": "forth", "state": "ADDED", "value": "end"},
-    {"name": "second", "state": "UNCHANGED", "value": "other"},
-    {"name": "third", "state": "REMOVED", "value": "another"}
-]

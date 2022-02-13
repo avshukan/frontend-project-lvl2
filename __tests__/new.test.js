@@ -28,8 +28,8 @@ const handler = (filenameBefore, filenameAfter) => {
 describe('all tests', () => {
   test.each([
     ['_file1.json', '_file2.json'],
-    // ['_file1.json', '_file2.yml'],
-    // ['_file1.yml', '_file2.json'],
-    // ['_file1.yml', '_file2.yml'],
+    ['_file1.json', '_file2.yml'],
+    ['_file1.yml', '_file2.json'],
+    ['_file1.yml', '_file2.yml'],
   ])('apply genDiff with %s & %s', handler);
 });
