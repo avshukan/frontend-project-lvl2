@@ -15,13 +15,13 @@
             doge: {
               - wow: too much
               + wow: so much
-            } 
-            key: value 
+            }
+            key: value
           + ops: vops
         }
-    } 
+    }
     group1: {
-      - baz: bas 
+      - baz: bas
       + baz: bars
         foo: bar
       - nest: {
@@ -29,35 +29,35 @@
         }
       + nest: str
     }
-    group2: { 
-        abc: 12345 
-        deep: { 
+  - group2: {
+        abc: 12345
+        deep: {
             id: 45
         }
     }
-    group3: { 
-        deep: { 
-            id: { 
+  + group3: {
+        deep: {
+            id: {
                 number: 45
             }
         }
         fee: 100500
-    } 
+    }
     group4: {
-      + default: null
-      - default:
-      + foo: 0
-      - foo: null
-      + isNested: false
-      - isNested: none
-        key: false 
+      - default: null
+      + default: 
+      - foo: 0
+      + foo: null
+      - isNested: false
+      + isNested: none
+      + key: false
         nest: {
-          + bar:
-          - bar: 0
-            isNested: true
+          - bar: 
+          + bar: 0
+          - isNested: true
         }
-        someKey: true
-      + type: bas
-      - type: bar
+      + someKey: true
+      - type: bas
+      + type: bar
     }
 }
