@@ -18,11 +18,10 @@ const printValue = (value) => {
     return 'null';
   }
   if (typeof value === 'object') {
-    return `{${Object.keys(value)
+    const result = Object.keys(value)
       .filter((key) => value[key] !== undefined)
-      .map((key) => `"${key}":${printValue(value[key])}`)
-      .join(',')
-    }}`;
+      .map((key) => `"${key}":${printValue(value[key])}`);
+    return `{${result.join(',')}}`;
   }
   if (typeof value === 'string') {
     return `"${value}"`;
