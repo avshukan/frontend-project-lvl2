@@ -23,6 +23,8 @@ const printValue = (value, prefix, deep) => {
   return [`${prefix}: ${value}`];
 };
 
+const getPrefix = (deep, sign, name) => `${INDENT.repeat(4 * deep - 2)}${sign}${INDENT}${name}`;
+
 const getStrings = (diff, deep = 1) => {
   const result = diff.map(({ name, state, value }) => {
     if (state === diffStates.COMPLEX) {
@@ -33,16 +35,12 @@ const getStrings = (diff, deep = 1) => {
     }
     if (state === diffStates.CHANGED) {
       const [before, after] = value;
-      const stringsBefore = printValue(before, `${INDENT.repeat(4 * deep - 2)}${signs[diffStates.REMOVED]} ${name}`, deep);
-      const stringsAfter = printValue(after, `${INDENT.repeat(4 * deep - 2)}${signs[diffStates.ADDED]} ${name}`, deep);
       return [
-        ...stringsBefore,
-        ...stringsAfter,
+        ...printValue(before, getPrefix(deep, signs[diffStates.REMOVED], name), deep),
+        ...printValue(after, getPrefix(deep, signs[diffStates.ADDED], name), deep),
       ].flat();
     }
-    const sign = signs[state];
-    const prefix = `${INDENT.repeat(4 * deep - 2)}${sign}${INDENT}${name}`;
-    return printValue(value, prefix, deep);
+    return printValue(value, getPrefix(deep, signs[state], name), deep);
   });
   return result;
 };
