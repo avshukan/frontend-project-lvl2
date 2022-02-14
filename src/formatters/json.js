@@ -11,9 +11,6 @@ const states = {
 };
 
 const printValue = (value) => {
-  if (Array.isArray(value)) {
-    return `[${value.map((child) => printValue(child)).join(',')}]`;
-  }
   if (value === null) {
     return 'null';
   }
