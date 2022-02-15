@@ -1,8 +1,12 @@
 import fs from 'fs';
 import path, { dirname } from 'path';
-import { test, expect, describe } from '@jest/globals';
+import {
+  test, expect, describe, beforeAll,
+} from '@jest/globals';
 import { fileURLToPath } from 'url';
 import genDiff from '../src/genDiff.js';
+
+const expected = {};
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -14,16 +18,17 @@ const readFile = (filename) => fs.readFileSync(getFixturesPath(filename), 'utf-8
 const handler = (filenameBefore, filenameAfter) => {
   const path1 = getFixturesPath(filenameBefore);
   const path2 = getFixturesPath(filenameAfter);
-  const realStylish = genDiff(path1, path2, 'stylish');
-  const expectedStylish = readFile('expected-stylish.txt');
-  expect(realStylish).toEqual(expectedStylish);
-  const realPlain = genDiff(path1, path2, 'plain');
-  const expectedPlain = readFile('expected-plain.txt');
-  expect(realPlain).toEqual(expectedPlain);
-  const realJson = genDiff(path1, path2, 'json');
-  const expectedJson = readFile('expected-json.json');
-  expect(JSON.parse(realJson)).toMatchObject(JSON.parse(expectedJson));
+  expect(genDiff(path1, path2, '')).toEqual(expected.stylish);
+  expect(genDiff(path1, path2, 'stylish')).toEqual(expected.stylish);
+  expect(genDiff(path1, path2, 'plain')).toEqual(expected.plain);
+  expect(JSON.parse(genDiff(path1, path2, 'json'))).toMatchObject(JSON.parse(expected.json));
 };
+
+beforeAll(() => {
+  expected.stylish = readFile('expected-stylish.txt');
+  expected.plain = readFile('expected-plain.txt');
+  expected.json = readFile('expected-json.json');
+});
 
 describe('all tests', () => {
   test.each([
