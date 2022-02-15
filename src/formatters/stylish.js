@@ -1,7 +1,5 @@
 import _ from 'lodash';
-import {
-  diffStates,
-} from '../diff.js';
+import diffStates from '../diffStates.js';
 
 const INDENT = ' ';
 

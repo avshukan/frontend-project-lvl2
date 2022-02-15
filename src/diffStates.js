@@ -1,0 +1,7 @@
+export default {
+  UNCHANGED: 'UNCHANGED',
+  ADDED: 'ADDED',
+  REMOVED: 'REMOVED',
+  CHANGED: 'CHANGED',
+  COMPLEX: 'COMPLEX',
+};

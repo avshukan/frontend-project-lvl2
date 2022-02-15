@@ -1,12 +1,5 @@
 import _ from 'lodash';
-
-const diffStates = {
-  UNCHANGED: 'UNCHANGED',
-  ADDED: 'ADDED',
-  REMOVED: 'REMOVED',
-  CHANGED: 'CHANGED',
-  COMPLEX: 'COMPLEX',
-};
+import diffStates from './diffStates.js';
 
 const makeDiffNode = (name, state, value) => ({ name, state, value });
 
@@ -28,10 +21,6 @@ const makeDiff = (obj1, obj2) => {
     return makeDiffNode(name, diffStates.CHANGED, [obj1[name], obj2[name]]);
   });
   return result;
-};
-
-export {
-  diffStates,
 };
 
 export default makeDiff;

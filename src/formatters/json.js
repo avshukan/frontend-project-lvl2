@@ -1,6 +1,4 @@
-import {
-  diffStates,
-} from '../diff.js';
+import diffStates from '../diffStates.js';
 
 const states = {
   [diffStates.ADDED]: 'added',
