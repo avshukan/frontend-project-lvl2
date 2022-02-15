@@ -15,13 +15,13 @@ const handler = (filenameBefore, filenameAfter) => {
   const path1 = getFixturesPath(filenameBefore);
   const path2 = getFixturesPath(filenameAfter);
   const realStylish = genDiff(path1, path2, 'stylish');
-  const expectedStylish = readFile('expected.stylish');
+  const expectedStylish = readFile('expected-stylish.txt');
   expect(realStylish).toEqual(expectedStylish);
   const realPlain = genDiff(path1, path2, 'plain');
-  const expectedPlain = readFile('expected.plain');
+  const expectedPlain = readFile('expected-plain.txt');
   expect(realPlain).toEqual(expectedPlain);
   const realJson = genDiff(path1, path2, 'json');
-  const expectedJson = readFile('expected.json');
+  const expectedJson = readFile('expected-json.json');
   expect(JSON.parse(realJson)).toMatchObject(JSON.parse(expectedJson));
 };
 
