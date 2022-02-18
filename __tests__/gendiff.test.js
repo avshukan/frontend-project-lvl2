@@ -12,10 +12,11 @@ const readFile = (filename) => fs.readFileSync(getFixturesPath(filename), 'utf-8
 const expectedStylish = readFile('expected-stylish.txt');
 const expectedPlain = readFile('expected-plain.txt');
 const expectedJson = readFile('expected-json.json');
+const extensions = ['json', 'yml'];
 
-const handler = (filenameBefore, filenameAfter) => {
-  const path1 = getFixturesPath(filenameBefore);
-  const path2 = getFixturesPath(filenameAfter);
+const handler = (extension) => {
+  const path1 = getFixturesPath(`file1.${extension}`);
+  const path2 = getFixturesPath(`file2.${extension}`);
   expect(genDiff(path1, path2, '')).toEqual(expectedStylish);
   expect(genDiff(path1, path2, 'stylish')).toEqual(expectedStylish);
   expect(genDiff(path1, path2, 'plain')).toEqual(expectedPlain);
@@ -23,10 +24,5 @@ const handler = (filenameBefore, filenameAfter) => {
 };
 
 describe('all tests', () => {
-  test.each([
-    ['file1.json', 'file2.json'],
-    ['file1.json', 'file2.yml'],
-    ['file1.yml', 'file2.json'],
-    ['file1.yml', 'file2.yml'],
-  ])('apply genDiff with %s & %s', handler);
+  test.each(extensions)('apply genDiff with %s', handler);
 });
