@@ -8,7 +8,7 @@ const getPath = (fileName) => path.resolve(process.cwd(), fileName);
 
 export const getData = (filepath) => fs.readFileSync(filepath, 'utf-8');
 
-export const getFormat = (filepath) => path.extname(filepath);
+export const getFormat = (filepath) => path.extname(filepath).slice(1);
 
 const genDiff = (filepath1, filepath2, formatName) => {
   const path1 = getPath(filepath1);

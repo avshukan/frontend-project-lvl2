@@ -9,10 +9,10 @@ const yamlParser = (data) => {
 
 const parser = (data, format) => {
   switch (format) {
-    case '.yaml':
-    case '.yml':
+    case 'yaml':
+    case 'yml':
       return yamlParser(data);
-    case '.json':
+    case 'json':
       return jsonParser(data);
     default:
       throw new Error('Invalid extension');
