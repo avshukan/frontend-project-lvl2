@@ -1,11 +1,8 @@
-import yaml from 'js-yaml';
+import YAML from 'js-yaml';
 
 const jsonParser = JSON.parse;
 
-const yamlParser = (data) => {
-  const result = yaml.load(data);
-  return result ?? {};
-};
+const yamlParser = YAML.load;
 
 const parser = (data, format) => {
   switch (format) {
