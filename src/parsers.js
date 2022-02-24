@@ -4,13 +4,13 @@ const jsonParser = JSON.parse;
 
 const yamlParser = YAML.load;
 
-const parser = (data, format) => {
+const parser = (format) => {
   switch (format) {
     case 'yaml':
     case 'yml':
-      return yamlParser(data);
+      return yamlParser;
     case 'json':
-      return jsonParser(data);
+      return jsonParser;
     default:
       throw new Error('Invalid extension');
   }
