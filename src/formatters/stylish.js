@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import diffStates from '../diffStates.js';
 
+const STEP = 4;
+
 const INDENT = ' ';
 
 const signs = {
@@ -10,25 +12,26 @@ const signs = {
   [diffStates.COMPLEX]: INDENT,
 };
 
+const getPrefix = (deep, sign, name) => `${INDENT.repeat(STEP * deep - 2)}${sign}${INDENT}${name}`;
+
 const printValue = (value, prefix, deep) => {
   if (_.isPlainObject(value)) {
+    const keys = _.sortBy(Object.keys(value));
     return [
       `${prefix}: {`,
-      ..._.sortBy(Object.keys(value)).map((key) => printValue(value[key], `${INDENT.repeat(4 * deep + 4)}${key}`, deep + 1)),
-      `${INDENT.repeat(4 * deep)}}`,
+      ...keys.map((key) => printValue(value[key], `${INDENT.repeat(STEP * deep + 4)}${key}`, deep + 1)),
+      `${INDENT.repeat(STEP * deep)}}`,
     ].flat();
   }
   return [`${prefix}: ${value}`];
 };
 
-const getPrefix = (deep, sign, name) => `${INDENT.repeat(4 * deep - 2)}${sign}${INDENT}${name}`;
-
 const getStrings = (diff, deep = 1) => {
   const result = diff.map(({ name, state, value }) => {
     if (state === diffStates.COMPLEX) {
-      const firstString = `${INDENT.repeat(4 * deep)}${name}: {`;
+      const firstString = `${INDENT.repeat(STEP * deep)}${name}: {`;
       const content = getStrings(value, deep + 1).flat();
-      const lastString = `${INDENT.repeat(4 * deep)}}`;
+      const lastString = `${INDENT.repeat(STEP * deep)}}`;
       return [firstString, ...content, lastString].flat();
     }
     if (state === diffStates.CHANGED) {
@@ -38,7 +41,16 @@ const getStrings = (diff, deep = 1) => {
         ...printValue(after, getPrefix(deep, signs[diffStates.ADDED], name), deep),
       ].flat();
     }
-    return printValue(value, getPrefix(deep, signs[state], name), deep);
+    if (state === diffStates.ADDED) {
+      return printValue(value, getPrefix(deep, signs[state], name), deep);
+    }
+    if (state === diffStates.REMOVED) {
+      return printValue(value, getPrefix(deep, signs[state], name), deep);
+    }
+    if (state === diffStates.UNCHANGED) {
+      return printValue(value, getPrefix(deep, signs[state], name), deep);
+    }
+    return [];
   });
   return result;
 };
