@@ -16,4 +16,4 @@ const parser = (format) => {
   }
 };
 
-export default parser;
+export default (data, format) => parser(format)(data);
