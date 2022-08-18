@@ -19,5 +19,4 @@ $ npm link
 Run ```gendiff```
 
 **Demonstration**:
-
 [![asciicast](https://asciinema.org/a/466903.svg)](https://asciinema.org/a/466903)
